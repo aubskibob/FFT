@@ -8,7 +8,7 @@ class MainWindow : public QObject
     Q_OBJECT;
 
     public slots:
-        bool Menu_Palette_Grayscale(Image &image);
+        bool Menu_Frequency_FFT(Image &image);
 
 };
 

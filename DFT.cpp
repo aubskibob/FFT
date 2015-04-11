@@ -19,7 +19,7 @@ Date:   Feb 2015
  *****************************************************************************/
 bool MainWindow::Menu_Frequency_DFT(Image &image)
 {
-    Image imageCopy = image;
+    /*Image imageCopy = image;
 
     if(image.IsNull())
         return false;
@@ -35,7 +35,7 @@ bool MainWindow::Menu_Frequency_DFT(Image &image)
         real[r] = image
     }
 
-    return true;
+    return true;*/
 }
 
 /*

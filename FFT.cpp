@@ -9,6 +9,7 @@ Date:   Feb 2015
 */
 
 #include "mainwindow.h"
+#include <complex.h>
 
 /******************************************************************************
  * Function: Menu_FFT

@@ -10,7 +10,6 @@ Date:   Feb 2015
 
 #include "mainwindow.h"
 
-#include "include/fftw3.h"
 #include <cmath>
 
 /******************************************************************************
@@ -95,7 +94,6 @@ bool MainWindow::Menu_Frequency_fftw_fft_v2(Image &image)
 {
     fftw_complex* in;
     fftw_complex* out;
-    fftw_plan plan;
 
     if(image.IsNull())
         return false;
@@ -109,27 +107,38 @@ bool MainWindow::Menu_Frequency_fftw_fft_v2(Image &image)
     {
         for(int j = 0; j < ncols; j++)
         {
-            in[i*ncols + j][0] = image[i][j];
+            in[i*ncols + j][0] = image[i][j] * ((i + j) % 2 == 0 ? 1 : -1);
             in[i*ncols + j][1] = 0;
         }
     }
 
     out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
-    plan = fftw_plan_dft_2d(nrows, ncols, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
-
-    fftw_execute(plan);
+    fft(in, out, nrows, ncols, FFTW_FORWARD);
 
     grayscale(image);
 
+    double max_mag = 0;
+    for(int i = 0; i < nrows; i++)
+    {
+        for(int j = 0; j < ncols; j++)
+        {
+            //mag = sqrt(out[i*ncols + j][0] * out[i*ncols + j][0]
+            in[i*ncols + j][0] = sqrt(out[i*ncols + j][0] * out[i*ncols + j][0]
+                + out[i*ncols + j][1] * out[i*ncols + j][1]);
+
+            if(max_mag < in[i*ncols + j][0])
+                max_mag = in[i*ncols + j][0];
+        }
+    }
+
+    double scale = 255.0 / log(max_mag + 1);
     double mag;
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
-            mag = sqrt(out[i*ncols + j][0] * out[i*ncols + j][0]
-                + out[i*ncols + j][1] * out[i*ncols + j][1]);
-            mag = (int)log(mag);
+            mag = (int)(scale * log(in[i*ncols + j][0] + 1));
             if(mag < 0)
                 mag = 0;
             else if(mag > 255)
@@ -139,5 +148,17 @@ bool MainWindow::Menu_Frequency_fftw_fft_v2(Image &image)
         }
     }
 
+    fftw_free(in);
+    fftw_free(out);
+
     return true;
+}
+
+void MainWindow::fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, int sign)
+{
+    fftw_plan plan = fftw_plan_dft_2d(nrows, ncols, in, out, sign, FFTW_ESTIMATE);
+
+    fftw_execute(plan);
+
+    fftw_destroy_plan(plan);
 }

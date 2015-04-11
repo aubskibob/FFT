@@ -2,10 +2,14 @@
 #define MAINWINDOW_H
 
 #include <qtimagelib.h>
+#include "include/fftw3.h"
 
 class MainWindow : public QObject
 {
     Q_OBJECT;
+
+    public:
+        void fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, int sign);
 
     public slots:
         //bool Menu_Frequency_FFT(Image &image);

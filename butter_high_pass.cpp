@@ -1,7 +1,7 @@
 #include <mainwindow.h>
 #include <cmath>
 
-bool MainWindow::Menu_Frequency_Butterworth_Low_Pass(Image &image)
+bool MainWindow::Menu_Frequency_Butterworth_High_Pass(Image &image)
 {
     fftw_complex* in;
     fftw_complex* out;

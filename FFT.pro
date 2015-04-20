@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ideal_low_pass.cpp \
     ideal_high_pass.cpp \
     ideal_emphasis.cpp \
-    butter_low_pass.cpp
+    butter_low_pass.cpp \
+    butter_high_pass.cpp
 
 HEADERS  += mainwindow.h
 

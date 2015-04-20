@@ -1,7 +1,8 @@
+
 #include <mainwindow.h>
 #include <cmath>
 
-bool MainWindow::Menu_Frequency_Butterworth_High_Pass(Image &image)
+bool MainWindow::Menu_Frequency_Gaussian_Low_Pass(Image &image)
 {
     fftw_complex* in;
     fftw_complex* out;
@@ -10,11 +11,11 @@ bool MainWindow::Menu_Frequency_Butterworth_High_Pass(Image &image)
     if(image.IsNull())
         return false;
 
-    double cutoff = 10;
-    if(!Dialog("Butterworth High Pass Filter").Add(cutoff, "cutoff").Show())
+    double spread = 10;
+    if(!Dialog("Gaussian Low Pass Filter").Add(spread, "spread").Show())
         return false;
 
-    if(cutoff <= 0)
+    if(spread <= 0)
         return false;
 
     int nrows = image.Height();
@@ -39,13 +40,13 @@ bool MainWindow::Menu_Frequency_Butterworth_High_Pass(Image &image)
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // butterworth high pass filter
+    // gaussian low pass filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
             float D = sqrt((i - center_y) * (i - center_y) + (j - center_x) * (j - center_x));
-            float H = 1/(1+pow((cutoff/D),4));
+            float H = exp((-1*D*D)/(2*spread*spread));
 
             out[i*ncols + j][0] *= H;
             out[i*ncols + j][1] *= H;

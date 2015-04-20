@@ -10,11 +10,11 @@ bool MainWindow::Menu_Frequency_Butterworth_Low_Pass(Image &image)
     if(image.IsNull())
         return false;
 
-    double arg = 10;
-    if(!Dialog("Butterworth Low Pass Filter").Add(arg, "arg").Show())
+    double cutoff = 10;
+    if(!Dialog("Butterworth Low Pass Filter").Add(cutoff, "cutoff").Show())
         return false;
 
-    if(arg <= 0)
+    if(cutoff <= 0)
         return false;
 
     int nrows = image.Height();
@@ -45,7 +45,7 @@ bool MainWindow::Menu_Frequency_Butterworth_Low_Pass(Image &image)
         for(int j = 0; j < ncols; j++)
         {
             float D = sqrt((i - center_y) * (i - center_y) + (j - center_x) * (j - center_x));
-            float H = 1/(1+pow((D/arg),4));
+            float H = 1/(1+pow((D/cutoff),4));
 
             out[i*ncols + j][0] *= H;
             out[i*ncols + j][1] *= H;

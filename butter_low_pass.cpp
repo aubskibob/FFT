@@ -1,7 +1,7 @@
 #include <mainwindow.h>
 #include <cmath>
 
-bool MainWindow::Menu_Frequency_Ideal_Low_Pass(Image &image)
+bool MainWindow::Menu_Frequency_Butterworth_Low_Pass(Image &image)
 {
     fftw_complex* in;
     fftw_complex* out;
@@ -14,7 +14,7 @@ bool MainWindow::Menu_Frequency_Ideal_Low_Pass(Image &image)
     if(!Dialog("Butterworth Low Pass Filter").Add(arg, "arg").Show())
         return false;
 
-    if(order <= 0)
+    if(arg <= 0)
         return false;
 
     arg = arg / 100;

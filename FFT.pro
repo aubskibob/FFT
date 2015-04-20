@@ -13,11 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    ideal_low_pass.cpp \
+    ideal_high_pass.cpp \
+    ideal_emphasis.cpp
 
 HEADERS  += mainwindow.h
 
 CONFIG += qtimagelib \
           fftw3
 
-LIBS += -L/home/student/1925123/csc442/FFT/lib -lfftw3
+LIBS += -L$$PWD/lib -lfftw3

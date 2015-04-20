@@ -39,7 +39,7 @@ bool MainWindow::Menu_Frequency_Ideal_High_Pass(Image &image)
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // low pass filter
+    // high pass filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)

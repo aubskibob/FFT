@@ -60,6 +60,15 @@ bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
 
     fft(in, out, nrows, ncols, FFTW_FORWARD);
 
+    for(int i = 0; i < nrows; i++)
+    {
+        for(int j = 0; j < ncols; j++)
+        {
+            out[i*ncols + j][0] /= (double)nrows;
+            out[i*ncols + j][1] /= (double)nrows;
+        }
+    }
+
     grayscale(image);
 
     double max_mag = 0;

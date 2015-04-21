@@ -51,10 +51,7 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
         for(int j = 0; j < ncols; j++)
         {
             float D = sqrt((i - center_y) * (i - center_y) + (j - center_x) * (j - center_x));
-            float H = (gamma_high - gamma_low) * (1.0 - exp((-1*D*D)/(cutoff*cutoff))) + gamma_low;
-            //float H = (1.0 - exp((-1*D*D)/(cutoff*cutoff)));
-
-            //std::cout << "H: " << H << std::endl;
+            float H = (gamma_high - gamma_low) * (1.0 - exp((-D*D)/(cutoff*cutoff))) + gamma_low;
 
             out[i*ncols + j][0] *= H;
             out[i*ncols + j][1] *= H;
@@ -64,33 +61,22 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
 
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
-    double max_mag = 0;
-
-    // compute magnitude and find max magnitude
-    for(int i = 0; i < nrows; i++)
-    {
-        for(int j = 0; j < ncols; j++)
-        {
-            in[i*ncols + j][0] = sqrt(out2[i*ncols + j][0] * out2[i*ncols + j][0]
-                + out2[i*ncols + j][1] * out2[i*ncols + j][1]);
-
-            if(max_mag < in[i*ncols + j][0])
-                max_mag = in[i*ncols + j][0];
-        }
-    }
-
-    std::cout << "max_mag: " << max_mag << std::endl;
-
     double mag;
-    // scale image
+
+    double re, im;
+    // compute magnitude
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
-            mag = (int)(255.0 / exp(max_mag) * exp(in[i*ncols + j][0]));
-            if(mag < 0)
-                mag = 0;
-            else if(mag > 255)
+            re = exp(out2[i*ncols + j][0]) * cos(out2[i*ncols + j][1]);
+            im = exp(out2[i*ncols + j][0]) * sin(out2[i*ncols + j][1]);
+
+            //mag = sqrt(out2[i*ncols + j][0] * out2[i*ncols + j][0]
+            //    + out2[i*ncols + j][1] * out2[i*ncols + j][1]);
+            mag = sqrt(re*re + im*im);
+
+            if(mag > 255)
                 mag = 255;
 
             image[i][j] = mag;

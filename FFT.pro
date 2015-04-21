@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     gauss_low_pass.cpp \
     gauss_high_pass.cpp \
     gauss_emphasis.cpp \
-    butter_emphasis.cpp
+    butter_emphasis.cpp \
+    homomorphic.cpp
 
 HEADERS  += mainwindow.h
 

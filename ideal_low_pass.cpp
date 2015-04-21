@@ -57,7 +57,7 @@ bool MainWindow::Menu_Frequency_Ideal_Low_Pass(Image &image)
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;
-    // compute magnitude and find max magnitude
+    // compute magnitude
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)

@@ -41,7 +41,7 @@ int pow2roundup (int x)
 
     return x+1;
 }
-
+/*
 bool MainWindow::Menu_Frequency_FFT(Image &image)
 {
     Image imageCopy;
@@ -128,3 +128,4 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
     return true;
 }
 
+*/

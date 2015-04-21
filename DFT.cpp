@@ -17,9 +17,9 @@ Date:   Feb 2015
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false
  *****************************************************************************/
-bool MainWindow::Menu_Frequency_DFT(Image &image)
+/*bool MainWindow::Menu_Frequency_DFT(Image &image)
 {
-    /*Image imageCopy = image;
+    Image imageCopy = image;
 
     if(image.IsNull())
         return false;
@@ -35,8 +35,8 @@ bool MainWindow::Menu_Frequency_DFT(Image &image)
         real[r] = image
     }
 
-    return true;*/
-}
+    return true;
+}*/
 
 /*
    Direct fourier transform

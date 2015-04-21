@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     butter_low_pass.cpp \
     butter_high_pass.cpp \
     gauss_low_pass.cpp \
-    gauss_high_pass.cpp
+    gauss_high_pass.cpp \
+    gauss_emphasis.cpp \
+    butter_emphasis.cpp
 
 HEADERS  += mainwindow.h
 

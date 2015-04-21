@@ -60,15 +60,6 @@ bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
 
     fft(in, out, nrows, ncols, FFTW_FORWARD);
 
-    for(int i = 0; i < nrows; i++)
-    {
-        for(int j = 0; j < ncols; j++)
-        {
-            out[i*ncols + j][0] /= (double)nrows;
-            out[i*ncols + j][1] /= (double)nrows;
-        }
-    }
-
     grayscale(image);
 
     double max_mag = 0;
@@ -112,6 +103,15 @@ void MainWindow::fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, 
     fftw_plan plan = fftw_plan_dft_2d(nrows, ncols, in, out, sign, FFTW_ESTIMATE);
 
     fftw_execute(plan);
+
+    for(int i = 0; i < nrows; i++)
+    {
+        for(int j = 0; j < ncols; j++)
+        {
+            out[i*ncols + j][0] /= (double)nrows;
+            out[i*ncols + j][1] /= (double)nrows;
+        }
+    }
 
     fftw_destroy_plan(plan);
 }

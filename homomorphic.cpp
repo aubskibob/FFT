@@ -15,8 +15,8 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
         return false;
 
     double cutoff = 10;
-    double gamma_high = 10;
-    double gamma_low = 2;
+    double gamma_high = 2;
+    double gamma_low = 1;
     if(!Dialog("Homomorphic Filter").Add(cutoff, "Cutoff").Add(gamma_high, "Gamma High").Add(gamma_low, "Gamma Low").Show())
         return false;
 
@@ -26,7 +26,7 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     int nrows = image.Height();
     int ncols = image.Width();
 
-    in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);\
+    in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
     out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
     for(int i = 0; i < nrows; i++)
@@ -45,7 +45,7 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // gaussian high pass filter
+    // homomorphic filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -62,19 +62,12 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;
-
-    double re, im;
     // compute magnitude
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
-            re = exp(out2[i*ncols + j][0]) * cos(out2[i*ncols + j][1]);
-            im = exp(out2[i*ncols + j][0]) * sin(out2[i*ncols + j][1]);
-
-            //mag = sqrt(out2[i*ncols + j][0] * out2[i*ncols + j][0]
-            //    + out2[i*ncols + j][1] * out2[i*ncols + j][1]);
-            mag = sqrt(re*re + im*im);
+            mag = exp(out2[i*ncols + j][0]);
 
             if(mag > 255)
                 mag = 255;

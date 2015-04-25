@@ -22,7 +22,7 @@ bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
     int nrows = image.Height();
     int ncols = image.Width();
 
-    in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);\
+    in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
     out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
     for(int i = 0; i < nrows; i++)

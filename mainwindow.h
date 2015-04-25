@@ -10,8 +10,6 @@ class MainWindow : public QObject
 
     public slots:
         bool Menu_Frequency_fftw_fft(Image &image);
-        bool Menu_Frequency_FFT(Image &image);
-        //bool Menu_Frequency_DFT(Image &image);
         bool Menu_Histogram_Stretch(Image &image);
         bool Menu_Frequency_Ideal_Low_Pass(Image &image);
         bool Menu_Frequency_Ideal_High_Pass(Image &image);
@@ -24,6 +22,7 @@ class MainWindow : public QObject
         bool Menu_Frequency_Gaussian_Emphasis(Image &image);
         bool Menu_Frequency_Homomorphic(Image &image);
         bool Menu_Frequency_Time_fftw(Image &image);
+        bool Menu_Frequency_Time_fft(Image &image);
 
     private:
         void fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, int sign);

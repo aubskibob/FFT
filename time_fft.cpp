@@ -11,6 +11,7 @@ Date:   Feb 2015
 #include "mainwindow.h"
 #include <complex.h>
 #include <iostream>
+#include <QElapsedTimer>
 
 /******************************************************************************
  * Function: Menu_FFT
@@ -42,7 +43,7 @@ int pow2roundup (int x)
     return x+1;
 }
 
-bool MainWindow::Menu_Frequency_FFT(Image &image)
+bool MainWindow::Menu_Frequency_Time_fft(Image &image)
 {
     Image imageCopy;
 
@@ -96,14 +97,14 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
     float **allReals = new float*[nrows];
     float **allImaginary = new float*[nrows];
 
-    // Loop through every pixel in the image and build an array
+    // finish building array
     for(int r = 0; r < nrows; r++)
     {
         allReals[r] = new float[ncols];
         allImaginary[r] = new float[ncols];
     }
 
-    // Loop through every pixel in the image and build an array
+    // Loop through every pixel and dump into real and imaginary array
     for(int r = 0; r < nrows; r++)
     {
         for(int c = 0; c < ncols; c++)
@@ -112,8 +113,6 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
             allImaginary[r][c] = 0.0;
         }
     }
-
-    fft2D(1,nrows,ncols,allReals,allImaginary);
 
     // Loop through every pixel in the image and build an array
     for(int r = 0; r < nrows; r++)
@@ -125,7 +124,14 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
         }
     }
 
-    image = imageCopy;
+    QElapsedTimer timer;
+    timer.start();
+    fft2D(1,nrows,ncols,allReals,allImaginary);
+    std::cout << "Forward fft elapsed time: " << timer.nsecsElapsed() / 10.0e9 << " seconds" << std::endl;
+
+    timer.restart();
+    fft2D(0,nrows,ncols,allReals,allImaginary);
+    std::cout << "Backward fft elapsed time: " << timer.nsecsElapsed() / 10.0e9 << " seconds" << std::endl;
 
     // Loop through every pixel in the image and build an array
     for(int r = 0; r < nrows; r++)

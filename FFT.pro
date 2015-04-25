@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     gauss_emphasis.cpp \
     butter_emphasis.cpp \
     homomorphic.cpp \
-    FFT.cpp
+    FFT.cpp \
+    time_fftw.cpp
 
 HEADERS  += mainwindow.h
 

@@ -24,6 +24,7 @@ class MainWindow : public QObject
         bool Menu_Frequency_Gaussian_High_Pass(Image &image);
         bool Menu_Frequency_Gaussian_Emphasis(Image &image);
         bool Menu_Frequency_Homomorphic(Image &image);
+        bool Menu_Frequency_Time_fftw(Image &image);
 
     private:
         void fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, int sign);

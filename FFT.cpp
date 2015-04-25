@@ -41,7 +41,7 @@ int pow2roundup (int x)
 
     return x+1;
 }
-/*
+
 bool MainWindow::Menu_Frequency_FFT(Image &image)
 {
     Image imageCopy;
@@ -54,20 +54,20 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
     bool rowsSquare = isPowerOfTwo(nrows);
     bool colsSquare = isPowerOfTwo(ncols);
 
-    //if the image is not a square power of two we need to make it so
+    //if the image dimensions are not a power of two we need to make it so
     if(!rowsSquare)
     {
         //round up to the next power of 2
         nrows = pow2roundup(nrows);
     }
-    //if the image is not a square power of two we need to make it so
+    //if the image dimensions are not a power of two we need to make it so
     if(!colsSquare)
     {
         //round up to the next power of 2
         ncols = pow2roundup(ncols);
     }
 
-    //if the image was found to not be square and a power of two make it so with old image centered in new image surrounded by 0's
+    //if the image dimensions are not a power of two we need to make the old image centered in new image surrounded by 0's
     if(!rowsSquare && !colsSquare)
     {
         // create a new image with appropiate proportions
@@ -75,17 +75,16 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
         int originalRows = image.Height();
         int originalCols = image.Width();
         int bufferRows = (nrows - originalRows) / 2;
-        //int bufferCols = (ncols - originalCols) / 2;
+        int bufferCols = (ncols - originalCols) / 2;
 
         for(int r = 0; r < nrows; r++)
         {
             for(int c = 0; c < ncols; c++)
             {
-                if((r < bufferRows || r > (bufferRows + originalRows)))
-                      //  && (c < bufferCols || c > (bufferCols + originalCols)))
+                if((r < bufferRows || r > (bufferRows + originalRows) - 1) || (c < bufferCols || c > (bufferCols + originalCols) - 1))
                     imageCopy[r][c] = 0;
                 else
-                    imageCopy[r][c] = 128;
+                    imageCopy[r][c] = image[r - bufferRows][c - bufferCols];
             }
         }
     }
@@ -95,18 +94,13 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
     }
 
     float **allReals = new float*[nrows];
-    float **allImaginary = new float*[ncols];
+    float **allImaginary = new float*[nrows];
 
     // Loop through every pixel in the image and build an array
-    for(int c = 0; c < ncols; c++)
+    for(int r = 0; r < nrows; r++)
     {
-        allReals[c] = new float[ncols];
-    }
-
-    // Loop through every pixel in the image and build an array
-    for(int c = 0; c < ncols; c++)
-    {
-        allImaginary[c] = new float[ncols];
+        allReals[r] = new float[ncols];
+        allImaginary[r] = new float[ncols];
     }
 
     // Loop through every pixel in the image and build an array
@@ -114,18 +108,36 @@ bool MainWindow::Menu_Frequency_FFT(Image &image)
     {
         for(int c = 0; c < ncols; c++)
         {
-            allReals[r][c] = 0.0;
+            allReals[r][c] = imageCopy[r][c]  * ((r + c) % 2 == 0 ? 1 : -1);
             allImaginary[r][c] = 0.0;
         }
     }
 
-    //fft2D(1,nrows,ncols,allReals,allImaginary);
+    fft2D(1,nrows,ncols,allReals,allImaginary);
 
-    image = *new Image(nrows,ncols);
+    // Loop through every pixel in the image and build an array
+    for(int r = 0; r < nrows; r++)
+    {
+        for(int c = 0; c < ncols; c++)
+        {
+            imageCopy[r][c] = allReals[r][c];
+            allImaginary[r][c] = 0.0;
+        }
+    }
 
     image = imageCopy;
+
+    // Loop through every pixel in the image and build an array
+    for(int r = 0; r < nrows; r++)
+    {
+        delete[] allReals[r];
+        delete[] allImaginary[r];
+    }
+
+    delete[] allReals;
+    delete[] allImaginary;
 
     return true;
 }
 
-*/
+

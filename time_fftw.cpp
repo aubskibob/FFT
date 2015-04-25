@@ -31,14 +31,22 @@ bool MainWindow::Menu_Frequency_Time_fftw(Image &image)
 
     out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    fftw_plan plan = fftw_plan_dft_2d(nrows, ncols, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+
     QElapsedTimer timer;
     timer.start();
-    fft(in, out, nrows, ncols, FFTW_FORWARD);
+    fftw_execute(plan);
     cout << "Forward fftw elapsed time: " << timer.nsecsElapsed() / 10.0e9 << " seconds" << endl;
 
+    fftw_destroy_plan(plan);
+
+    plan = fftw_plan_dft_2d(nrows, ncols, in, out, FFTW_BACKWARD, FFTW_ESTIMATE);
+
     timer.restart();
-    fft(in, out, nrows, ncols, FFTW_BACKWARD);
+    fftw_execute(plan);
     cout << "Backward fftw elapsed time: " << timer.nsecsElapsed() / 10.0e9 << " seconds" << endl;
+
+    fftw_destroy_plan(plan);
 
     fftw_free(in);
     fftw_free(out2);

@@ -69,8 +69,12 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
     }
 
     //if the image dimensions are not a power of two we need to make the old image centered in new image surrounded by 0's
-    if(!rowsSquare && !colsSquare)
+    if(!rowsSquare || !colsSquare)
     {
+
+        std::cout << "nrows: " << nrows << std::endl;
+        std::cout << "ncols: " << ncols << std::endl;
+
         // create a new image with appropiate proportions
         imageCopy = *new Image(nrows,ncols);
         int originalRows = image.Height();
@@ -109,6 +113,8 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
     {
         for(int c = 0; c < ncols; c++)
         {
+
+            //std::cout << r << " " << c << std::endl;
             allReals[r][c] = imageCopy[r][c]  * ((r + c) % 2 == 0 ? 1 : -1);
             allImaginary[r][c] = 0.0;
         }

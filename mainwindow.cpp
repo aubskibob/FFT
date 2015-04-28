@@ -14,19 +14,24 @@ Date:   Feb 2015
 #include <iostream>
 
 /******************************************************************************
- * Function: Menu_Palette_Grayscale
- * Description: Uses the built in qtimagelib grayscale function to convert
- *              the image to grayscale.
+ * Function: Menu_Histogram_Stretch
+ * Description: Uses the built in qtimagelib histogramStretch function to
+ *              increase the image contrast.
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false
  *****************************************************************************/
-
 bool MainWindow::Menu_Histogram_Stretch(Image &image)
 {
     histogramStretch( image );
     return true;
 }
 
+/******************************************************************************
+ * Function: Menu_Frequency_fftw_fft
+ * Description: Displays the magnitude of the FFT.
+ * Parameters: image - the image to operate on
+ * Returns: true if the image was successfully updated; otherwise, false
+ *****************************************************************************/
 bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
 {
     fftw_complex* in;
@@ -62,6 +67,7 @@ bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
     {
         for(int j = 0; j < ncols; j++)
         {
+            // Store the magnitude in the in array for efficiency
             in[i*ncols + j][0] = sqrt(out[i*ncols + j][0] * out[i*ncols + j][0]
                 + out[i*ncols + j][1] * out[i*ncols + j][1]);
 
@@ -72,6 +78,7 @@ bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
 
     double scale = 255.0 / log(max_mag + 1);
     double mag;
+    // Take the log scale and update the image with the magnitude of the fft
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -92,12 +99,24 @@ bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
     return true;
 }
 
+/******************************************************************************
+ * Function: fft
+ * Description: Uses fftw to compute the forward or inverse FFT on the given
+ *              2D array
+ * Parameters: in - the input 2D array to the FFT
+ *             out - where the output of the FFT will be stored
+ *             nrows - number of rows
+ *             ncols - number of columns
+ *             sign - determines whether to compute the forward or inverse FFT
+ * Returns: void
+ *****************************************************************************/
 void MainWindow::fft(fftw_complex* in, fftw_complex* out, int nrows, int ncols, int sign)
 {
     fftw_plan plan = fftw_plan_dft_2d(nrows, ncols, in, out, sign, FFTW_ESTIMATE);
 
     fftw_execute(plan);
 
+    // Divide the result by N
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)

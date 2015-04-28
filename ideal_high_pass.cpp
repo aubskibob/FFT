@@ -51,6 +51,7 @@ bool MainWindow::Menu_Frequency_Ideal_High_Pass(Image &image)
         }
     }
 
+    // execute the forward Fourier Transformation
     out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
     fft(in, out, nrows, ncols, FFTW_FORWARD);
@@ -58,7 +59,7 @@ bool MainWindow::Menu_Frequency_Ideal_High_Pass(Image &image)
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // high pass filter
+    // apply the ideal high pass filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -71,6 +72,7 @@ bool MainWindow::Menu_Frequency_Ideal_High_Pass(Image &image)
         }
     }
 
+    // execute the inverse Fourier Transformation
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;

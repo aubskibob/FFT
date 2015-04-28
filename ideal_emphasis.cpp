@@ -55,12 +55,13 @@ bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
 
     out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    // execute the forward Fourier Transformation
     fft(in, out, nrows, ncols, FFTW_FORWARD);
 
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // high frequency emphasis filter
+    // apply the ideal high frequency emphasis filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -78,6 +79,7 @@ bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
         }
     }
 
+    // execute the inverse Fourier Transformation
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;

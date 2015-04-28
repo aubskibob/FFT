@@ -5,7 +5,7 @@ ideal_emphasis.cpp
 Final Assignment 3 for CSC 442
 
 Author: Aubrey Olson // Matt Richard
-Date:   Feb 2015
+Date:   April 2015
 */
 
 #include <mainwindow.h>
@@ -42,10 +42,12 @@ bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
     in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
     out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    // initialize in variable with the image
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
+            // negate every other value to shift FFT by half the period
             in[i*ncols + j][0] = image[i][j] * ((i + j) % 2 == 0 ? 1 : -1);
             in[i*ncols + j][1] = 0;
         }
@@ -79,7 +81,7 @@ bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;
-    // compute magnitude
+    // compute magnitude and update image
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)

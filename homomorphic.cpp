@@ -1,10 +1,23 @@
+/*
 
+homomorphic.cpp
+
+Final Assignment 3 for CSC 442
+
+Author: Aubrey Olson // Matt Richard
+Date:   April 2015
+*/
 
 #include <mainwindow.h>
 #include <cmath>
 
-#include <iostream>
-
+/******************************************************************************
+ * Function: Menu_Frequency_Homomorphic
+ * Description: Applys a homomorphic filter on the given image in the
+ *              frequency domain.
+ * Parameters: image - the image to operate on
+ * Returns: true if the image was successfully updated; otherwise, false
+ *****************************************************************************/
 bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
 {
     fftw_complex* in;
@@ -17,6 +30,7 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     double cutoff = 10;
     double gamma_high = 2;
     double gamma_low = 1;
+    // Get gamma values and cutoff from the user
     if(!Dialog("Homomorphic Filter").Add(cutoff, "Cutoff").Add(gamma_high, "Gamma High").Add(gamma_low, "Gamma Low").Show())
         return false;
 
@@ -29,10 +43,12 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
     out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    // initialize in variable with the log of the image
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
+            // negate every other value to shift FFT by half the period
             in[i*ncols + j][0] = log(image[i][j] + 1) * ((i + j) % 2 == 0 ? 1 : -1);
             in[i*ncols + j][1] = 0;
         }
@@ -62,7 +78,7 @@ bool MainWindow::Menu_Frequency_Homomorphic(Image &image)
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double mag;
-    // compute magnitude
+    // exponentiate and update image
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)

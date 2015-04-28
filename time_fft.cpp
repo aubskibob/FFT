@@ -16,11 +16,10 @@ Date:   April 2015
 using namespace std;
 
 /******************************************************************************
- * Function: Menu_Frequency_Time_fft
- * Description: Times the forward and inverse FFT of the given image using fftw
- *              and prints the results to the console.
- * Parameters: image - the image to operate on
- * Returns: true if the image was successfully updated; otherwise, false
+ * Function: isPowerOfTwo
+ * Description: Returns true if integer passed is a power of two
+ * Parameters: int x - the integer to test
+ * Returns: true if the integer is a power of two
  *****************************************************************************/
 
 int isPowerOfTwo (int x)
@@ -30,6 +29,14 @@ int isPowerOfTwo (int x)
 
     return (x == 1);
 }
+
+/******************************************************************************
+ * Function: pow2roundup
+ * Description: Returns the next higher power of two if int is not currently
+ *              a power of two
+ * Parameters: int x - the integer to check and possibly round up
+ * Returns: either the original number or the next highest power of two
+ *****************************************************************************/
 
 int pow2roundup (int x)
 {
@@ -46,6 +53,14 @@ int pow2roundup (int x)
     return x+1;
 }
 
+/******************************************************************************
+ * Function: Menu_Frequency_Time_fft
+ * Description: Times the forward and inverse FFT of the given image using fftw
+ *              and prints the results to the console.
+ * Parameters: image - the image to operate on
+ * Returns: true if the image was successfully operated upon; otherwise, false
+ *****************************************************************************/
+
 bool MainWindow::Menu_Frequency_Time_fft(Image &image)
 {
     Image imageCopy;
@@ -58,20 +73,20 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
     bool rowsSquare = isPowerOfTwo(nrows);
     bool colsSquare = isPowerOfTwo(ncols);
 
-    //if the image dimensions are not a power of two we need to make it so
+    // if the image dimensions are not a power of two we need to make it so
     if(!rowsSquare)
     {
-        //round up to the next power of 2
+        // round up to the next power of 2
         nrows = pow2roundup(nrows);
     }
-    //if the image dimensions are not a power of two we need to make it so
+    // if the image dimensions are not a power of two we need to make it so
     if(!colsSquare)
     {
-        //round up to the next power of 2
+        // round up to the next power of 2
         ncols = pow2roundup(ncols);
     }
 
-    //if the image dimensions are not a power of two we need to make the old image centered in new image surrounded by 0's
+    // if the image dimensions are not a power of two we need to make the old image centered in new image surrounded by 0's
     if(!rowsSquare || !colsSquare)
     {
 
@@ -111,7 +126,7 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
         allImaginary[r] = new float[ncols];
     }
 
-    // Loop through every pixel and dump into real and imaginary array
+    // loop through every pixel and dump into real and imaginary array
     for(int r = 0; r < nrows; r++)
     {
         for(int c = 0; c < ncols; c++)
@@ -123,7 +138,7 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
         }
     }
 
-    // Loop through every pixel in the image and build an array
+    // populate the arrays with intensity values from the image (reals) and 0's (imaginary)
     for(int r = 0; r < nrows; r++)
     {
         for(int c = 0; c < ncols; c++)
@@ -133,6 +148,7 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
         }
     }
 
+    // run forward and inverse FFT transformation and display time to do both
     QElapsedTimer timer;
     timer.start();
     fft2D(1,nrows,ncols,allReals,allImaginary);
@@ -142,13 +158,14 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
     fft2D(0,nrows,ncols,allReals,allImaginary);
     std::cout << "Backward fft elapsed time: " << timer.nsecsElapsed() / 10.0e9 << " seconds" << std::endl;
 
-    // Loop through every pixel in the image and build an array
+    // delete arrays and free memory
     for(int r = 0; r < nrows; r++)
     {
         delete[] allReals[r];
         delete[] allImaginary[r];
     }
 
+    // delete arrays and free memory
     delete[] allReals;
     delete[] allImaginary;
 

@@ -1,6 +1,23 @@
+/*
+
+ideal_emphasis.cpp
+
+Final Assignment 3 for CSC 442
+
+Author: Aubrey Olson // Matt Richard
+Date:   Feb 2015
+*/
+
 #include <mainwindow.h>
 #include <cmath>
 
+/******************************************************************************
+ * Function: Menu_Frequency_Ideal_Emphasis
+ * Description: Applys an ideal high frequency emphasis filter on the given
+ *              image in the frequency domain.
+ * Parameters: image - the image to operate on
+ * Returns: true if the image was successfully updated; otherwise, false
+ *****************************************************************************/
 bool MainWindow::Menu_Frequency_Ideal_Emphasis(Image &image)
 {
     fftw_complex* in;

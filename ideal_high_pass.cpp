@@ -12,7 +12,7 @@ Date:   Feb 2015
 #include <cmath>
 
 /******************************************************************************
- * Function: Menu_Frequency_Ideal_Low_Pass
+ * Function: Menu_Frequency_Ideal_High_Pass
  * Description: Applys an ideal high pass filter on the given image in the
  *              frequency domain.
  * Parameters: image - the image to operate on

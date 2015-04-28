@@ -77,28 +77,14 @@ bool MainWindow::Menu_Frequency_Gaussian_Low_Pass(Image &image)
     // execute the inverse Fourier Transformation
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
-    double max_mag = 0;
-
-    // compute magnitude and find max magnitude
-    for(int i = 0; i < nrows; i++)
-    {
-        for(int j = 0; j < ncols; j++)
-        {
-            in[i*ncols + j][0] = sqrt(out2[i*ncols + j][0] * out2[i*ncols + j][0]
-                + out2[i*ncols + j][1] * out2[i*ncols + j][1]);
-
-            if(max_mag < in[i*ncols + j][0])
-                max_mag = in[i*ncols + j][0];
-        }
-    }
-
     double mag;
-    // scale image
+    // compute magnitude and update image
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
         {
-            mag = (int)(255.0 / max_mag * in[i*ncols + j][0]);
+            mag = sqrt(out2[i*ncols + j][0] * out2[i*ncols + j][0]
+                    + out2[i*ncols + j][1] * out2[i*ncols + j][1]);
             if(mag < 0)
                 mag = 0;
             else if(mag > 255)

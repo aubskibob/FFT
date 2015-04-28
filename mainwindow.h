@@ -1,3 +1,13 @@
+/*
+
+mainwindow.h
+
+Final Assignment 3 for CSC 442
+
+Author: Aubrey Olson // Matt Richard
+Date:   Apr 2015
+*/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

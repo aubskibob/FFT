@@ -5,7 +5,7 @@ ideal_high_pass.cpp
 Final Assignment 3 for CSC 442
 
 Author: Aubrey Olson // Matt Richard
-Date:   Feb 2015
+Date:   April 2015
 */
 
 #include <mainwindow.h>

@@ -20,12 +20,6 @@ Date:   Feb 2015
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false
  *****************************************************************************/
-/*bool MainWindow::Menu_Palette_Grayscale(Image &image)
-{
-    grayscale(image);
-    return true;
-}
-*/
 
 bool MainWindow::Menu_Histogram_Stretch(Image &image)
 {

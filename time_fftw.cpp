@@ -2,7 +2,7 @@
 
 time_fftw.cpp
 
-Final Assignment for CSC 442
+Final Assignment 3 for CSC 442
 
 Author: Aubrey Olson // Matt Richard
 Date:   Feb 2015

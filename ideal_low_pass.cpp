@@ -13,7 +13,7 @@ Date:   Feb 2015
 
 /******************************************************************************
  * Function: Menu_Frequency_Ideal_Low_Pass
- * Description: Apply an ideal low pass filter on the given image in the
+ * Description: Applys an ideal low pass filter on the given image in the
  *              frequency domain.
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false

@@ -1,5 +1,23 @@
+/*
+
+butter_emphasis.cpp
+
+Final Assignment 3 for CSC 442
+
+Author: Aubrey Olson // Matt Richard
+Date:   Apr 2015
+*/
+
 #include <mainwindow.h>
 #include <cmath>
+
+/******************************************************************************
+ * Function: Menu_Frequency_Butterworth_Emphasis
+ * Description: Applys an Butterworth high frequency emphasis filter on the given
+ *              image in the frequency domain.
+ * Parameters: image - the image to operate on
+ * Returns: true if the image was successfully updated; otherwise, false
+ *****************************************************************************/
 
 bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
 {
@@ -12,7 +30,7 @@ bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
 
     double cutoff = 10;
     double k = 2;
-    if(!Dialog("Butterworth High Pass Filter").Add(cutoff, "cutoff").Add(k, "k-value").Show())
+    if(!Dialog("Butterworth Emphasis Filter").Add(cutoff, "cutoff").Add(k, "k-value").Show())
         return false;
 
     if(cutoff <= 0)
@@ -21,9 +39,11 @@ bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
     int nrows = image.Height();
     int ncols = image.Width();
 
+    // allocate memory
     in = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
     out2 = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    // populate the complex array with intensity values from the image (reals) and 0's (imaginary)
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -35,12 +55,13 @@ bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
 
     out = (fftw_complex*)fftw_malloc(sizeof(fftw_complex) * nrows * ncols);
 
+    // execute the forward Fourier Transformation
     fft(in, out, nrows, ncols, FFTW_FORWARD);
 
     int center_x = ncols / 2.0;
     int center_y = nrows / 2.0;
 
-    // butterworth high pass filter
+    // apply butterworth emphasis filter
     for(int i = 0; i < nrows; i++)
     {
         for(int j = 0; j < ncols; j++)
@@ -54,6 +75,7 @@ bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
         }
     }
 
+    // execute the inverse Fourier Transformation
     fft(out, out2, nrows, ncols, FFTW_BACKWARD);
 
     double max_mag = 0;
@@ -87,6 +109,7 @@ bool MainWindow::Menu_Frequency_Butterworth_Emphasis(Image &image)
         }
     }
 
+    // delete and free memory
     fftw_free(in);
     fftw_free(out2);
     fftw_free(out);

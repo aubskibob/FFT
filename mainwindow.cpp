@@ -32,7 +32,7 @@ bool MainWindow::Menu_Histogram_Stretch(Image &image)
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false
  *****************************************************************************/
-bool MainWindow::Menu_Frequency_fftw_fft(Image &image)
+bool MainWindow::Menu_Frequency_Magnitude(Image &image)
 {
     fftw_complex* in;
     fftw_complex* out;

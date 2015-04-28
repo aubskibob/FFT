@@ -1,21 +1,24 @@
 /*
 
-FFT.cpp
+time_fftw.cpp
 
-Final Assignment for CSC 442
+Final Assignment 3 for CSC 442
 
 Author: Aubrey Olson // Matt Richard
-Date:   Feb 2015
+Date:   April 2015
 */
 
-#include "mainwindow.h"
+#include <mainwindow.h>
+#include <QElapsedTimer>
 #include <complex.h>
 #include <iostream>
-#include <QElapsedTimer>
+
+using namespace std;
 
 /******************************************************************************
- * Function: Menu_FFT
- * Description: FFT the given image.
+ * Function: Menu_Frequency_Time_fft
+ * Description: Times the forward and inverse FFT of the given image using fftw
+ *              and prints the results to the console.
  * Parameters: image - the image to operate on
  * Returns: true if the image was successfully updated; otherwise, false
  *****************************************************************************/
@@ -72,8 +75,8 @@ bool MainWindow::Menu_Frequency_Time_fft(Image &image)
     if(!rowsSquare || !colsSquare)
     {
 
-        std::cout << "nrows: " << nrows << std::endl;
-        std::cout << "ncols: " << ncols << std::endl;
+        cout << "nrows: " << nrows << endl;
+        cout << "ncols: " << ncols << endl;
 
         // create a new image with appropiate proportions
         imageCopy = *new Image(nrows,ncols);

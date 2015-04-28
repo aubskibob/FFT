@@ -2,37 +2,51 @@
 
 main.cpp
 
-Assignment 2 for CSC 442
+Assignment 3 for CSC 442
 
 Author: Aubrey Olson // Matt Richard
-Date:   Feb 2015
-Program Description:  This program shows all of the neighborhood processes detailed in class and at
-                        http://www.mcs.sdsmt.edu/csc442/Assignments/PA2.pdf.  It can open, modify,  and
-                        save user-specified images.
+Date:   April 2015
+Program Description:
+    2-D FFT and frequency domain filtering (ideal, Butterworth, Gaussian, homomorphic)
+
+Project Overview:
+    We implemented the Fourier Transformation as a baseline function for this project.
+    Specifically, we implemented a 2-D Fast Fourier Transformation called Fastest Fourier Transformation in the West (FFTW).
+    We also implmented QTImageLib's fft2D for time to execute comparison.
+    We used our implementation of the FFTW as our primary module to build frequency domain filters.
+    The frequency domain filters we implemented are the ideal, Butterworth and homomorphic. Below lists all the filters we implemented.
+
+Frequency domain filters:
+    Ideal low pass
+    Ideal high pass
+    Ideal emphasis
+    Butterworth low pass
+    Butterworth high pass
+    Butterworth emphasis
+    Gaussian low pass
+    Gaussian high pass
+    Gaussian emphasis
+    Homomorphic emphasis
+
 
 Necessary Headers
-    math.h
+    cmath.h
     mainwindow.h
 
 Necessary Files:
     mainwindow.cpp \
-    smoothing3_3.cpp \
-    sharpening.cpp \
-    outofrange.cpp \
-    meanfilterN_N.cpp \
-    outofrangeN_N.cpp \
-    kirsh_direction.cpp \
-    kirsh_magnitude.cpp \
-    laplacian.cpp \
-    maximum.cpp \
-    median_plus.cpp \
-    minimum.cpp \
-    emboss.cpp \
-    median.cpp \
-    standardDevN_N.cpp \
-    sobel_edge_mag.cpp \
-    sobel_edge_dir.cpp \
-    gaussian_smoothing.cpp
+    ideal_low_pass.cpp \
+    ideal_high_pass.cpp \
+    ideal_emphasis.cpp \
+    butter_low_pass.cpp \
+    butter_high_pass.cpp \
+    gauss_low_pass.cpp \
+    gauss_high_pass.cpp \
+    gauss_emphasis.cpp \
+    butter_emphasis.cpp \
+    homomorphic.cpp \
+    time_fftw.cpp \
+    time_fft.cpp
 */
 
 #include "mainwindow.h"

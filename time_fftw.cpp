@@ -20,7 +20,7 @@ using namespace std;
  * Description: Times the forward and inverse FFT of the given image using fftw
  *              and prints the results to the console.
  * Parameters: image - the image to operate on
- * Returns: true if the image was successfully updated; otherwise, false
+ * Returns: true if the image was successfully operated upon; otherwise, false
  *****************************************************************************/
 bool MainWindow::Menu_Frequency_Time_fftw(Image &image)
 {
